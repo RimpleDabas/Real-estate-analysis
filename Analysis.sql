@@ -134,3 +134,20 @@ WHERE YEAR = '2018' AND Provinces = 'B.C.'
 GROUP BY Centres
 ORDER BY ROUND(AVG([1_BHK]),2) DESC;
 	
+-- Include 2 bhk as well
+CREATE VIEW Centres_data_2 AS 
+	(SELECT p.Provinces, c.centres, r.YEAR, ROUND(AVG(r._1_Bedroom),2) AS '1_BHK' , 
+		ROUND(AVG(r._2_Bedroom),2) AS '2_BHK' 
+		FROM [Rental Data] r
+		INNER JOIN Provinces p ON r.province_id = p.province_id
+		RIGHT JOIN Centres c  ON r.Centre_id = c.Centre_id
+		WHERE r._1_Bedroom > 0
+		GROUP BY  p.Provinces,c.Centres,r.Year)
+
+SELECT * FROM Centres_data_2;
+
+SELECT TOP 3 Centres , ROUND(AVG([1_BHK]),2) AS rents_1, ROUND(AVG([2_BHK]),2) AS rents_2 FROM Centres_data_2
+WHERE YEAR = '2018' AND Provinces = 'B.C.'
+GROUP BY Centres
+ORDER BY ROUND(AVG([1_BHK]),2) DESC;
+	
