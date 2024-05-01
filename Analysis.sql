@@ -14,14 +14,22 @@ INNER JOIN Provinces p ON r.province_id = p.province_id
 WHERE r._1_Bedroom > 0
 GROUP BY r.YEAR, p.Provinces;
 
--- Average rents zone wise 
+-- Average rents Centres wise and getting data for particular Centre using CTE
+WITH Centres_data AS
+(
+	SELECT p.Provinces, c.centres, r.YEAR, ROUND(AVG(r._1_Bedroom),2) AS '1 BHK' 
+	FROM [Rental Data] r
+	INNER JOIN Provinces p ON r.province_id = p.province_id
+	RIGHT JOIN Centres c  ON r.Centre_id = c.Centre_id
+	WHERE r._1_Bedroom > 0
+	GROUP BY  p.Provinces,c.Centres,r.Year
+	)
 
-SELECT p.Provinces, c.centres, r.YEAR, ROUND(AVG(r._1_Bedroom),2) AS '1 BHK' 
-FROM [Rental Data] r
-INNER JOIN Provinces p ON r.province_id = p.province_id
-RIGHT JOIN Centres c  ON r.Centre_id = c.Centre_id
-WHERE r._1_Bedroom > 0
-GROUP BY  p.Provinces,c.Centres,r.Year;
+SELECT * FROM  Centres_data
+WHERE Centres = 'Toronto'
+ORDER BY Year;
+
+
 
 
 -- Average rents province wise, Neighborhood wise and eliminating data where there are no values 
@@ -30,9 +38,23 @@ SELECT p.Provinces, n.neighbourhood, r.YEAR, ROUND(AVG(r._1_Bedroom),2) AS '1 BH
 FROM [Rental Data] r
 INNER JOIN Provinces p ON r.province_id = p.province_id
 RIGHT JOIN Neighbourhood n  ON r.Neighbourhood_id = n.Neighbourhood_id
-WHERE (r._1_Bedroom > 0 AND n.Neighbourhood LIKE '%Toronto%') -- Use wildcard to get neighbourhood trend
-GROUP BY r.YEAR, p.Provinces,n.Neighbourhood
+WHERE (r._1_Bedroom > 0 AND p.Provinces LIKE 'Ont.') -- Use wildcard to get neighbourhood trend
+GROUP BY r.YEAR, p.Provinces,n.Neighbourhood;
 --HAVING ROUND(AVG(r._1_Bedroom),2)  > 0  ;
+
+-- Same Results using cte
+
+WITH Provincial_data AS (
+	SELECT p.Provinces, n.neighbourhood, r.YEAR, ROUND(AVG(r._1_Bedroom),2) AS '1 BHK' 
+	FROM [Rental Data] r
+	INNER JOIN Provinces p ON r.province_id = p.province_id
+	RIGHT JOIN Neighbourhood n  ON r.Neighbourhood_id = n.Neighbourhood_id
+	WHERE (r._1_Bedroom > 0 AND p.Provinces LIKE 'Ont.') -- Use wildcard to get neighbourhood trend
+	GROUP BY r.YEAR, p.Provinces,n.Neighbourhood
+	)
+
+SELECT * FROM Provincial_data;
+
 
 
 -- Province with highest rent
@@ -63,3 +85,32 @@ FROM AvgRentByProvince arp
 WHERE arp.avg_rent IN (SELECT max_avg_rent FROM MaxAvgRent)
    OR arp.avg_rent IN (SELECT min_avg_rent FROM MinAvgRent);
 
+
+
+CREATE VIEW RentalSummary AS
+SELECT r.Rent_ID, r._1_Bedroom, r.province_id, r.neighbourhood_id, r.YEAR, p.Provinces
+FROM [Rental Data] r
+INNER JOIN Provinces p ON r.province_id = p.province_id;
+
+SELECT * FROM RentalSummary;
+
+CREATE VIEW Provincial_data AS (
+SELECT p.Provinces, c.centres, r.YEAR, ROUND(AVG(r._1_Bedroom),2) AS '1_BHK' 
+FROM [Rental Data] r
+INNER JOIN Provinces p ON r.province_id = p.province_id
+RIGHT JOIN Centres c  ON r.Centre_id = c.Centre_id
+WHERE r._1_Bedroom > 0
+GROUP BY  p.Provinces,c.Centres,r.Year);
+
+
+SELECT * FROM Provincial_data; 
+
+SELECT TOP 5 Provinces,Year , ROUND(AVG([1_BHK]),2) AS rents FROM Provincial_data
+GROUP BY Provinces,Year
+ORDER BY YEAR DESC, ROUND(AVG([1_BHK]),2) DESC;
+	
+SELECT TOP 5 Provinces ,ROUND(AVG([1_BHK]),2) AS rents FROM Provincial_data
+WHERE YEAR = '2022'
+GROUP BY Provinces
+ORDER BY ROUND(AVG([1_BHK]),2) DESC;
+	
