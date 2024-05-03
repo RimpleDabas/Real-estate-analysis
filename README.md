@@ -63,6 +63,7 @@ SELECT * FROM Provincial_data;
 
 - Among the Provinces British Columbia has seen the highest rents for all the years followed by Ontario.
 
+
 - In Ontario Toronto Centre tops the rents for all the years
 ![](Results/Average%20rents%20based%20on%20province%20and%20centre.png)
 
