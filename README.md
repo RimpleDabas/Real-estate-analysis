@@ -58,7 +58,9 @@ SELECT * FROM Provincial_data;
 ~~~
 
 # Insights and results
+
 - In general the overall trend for the rents across Canada has been on the increasing side 
+
 ![](Results/Rnts%20yearwise.png)
 
 - Among the Provinces British Columbia has seen the highest rents for all the years followed by Ontario.
