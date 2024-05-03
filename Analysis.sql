@@ -5,6 +5,7 @@ SELECT DISTINCT(Provinces) FROM Provinces;
 SELECT DISTINCT(Neighbourhood) FROM Neighbourhood;
 
 SELECT YEAR, ROUND(AVG(_1_Bedroom),2) AS '1 BHK' , ROUND(AVG(_2_Bedroom),2) AS '2 BHK' FROM [Rental Data]
+WHERE _1_Bedroom> 0
 GROUP BY Year;
 
 -- Average rents province wise
@@ -104,6 +105,8 @@ GROUP BY  p.Provinces,c.Centres,r.Year);
 
 
 SELECT * FROM Provincial_data; 
+
+
 -- Getting data for the provinces for all years top 5
 SELECT TOP 5 Provinces,Year , ROUND(AVG([1_BHK]),2) AS rents FROM Provincial_data
 GROUP BY Provinces,Year
@@ -147,7 +150,7 @@ CREATE VIEW Centres_data_2 AS
 SELECT * FROM Centres_data_2;
 
 SELECT TOP 3 Centres , ROUND(AVG([1_BHK]),2) AS rents_1, ROUND(AVG([2_BHK]),2) AS rents_2 FROM Centres_data_2
-WHERE YEAR = '2018' AND Provinces = 'B.C.'
+WHERE YEAR = '2022' AND Provinces = 'ONT.'
 GROUP BY Centres
 ORDER BY ROUND(AVG([1_BHK]),2) DESC;
 	
