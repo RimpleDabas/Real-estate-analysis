@@ -63,11 +63,14 @@ SELECT * FROM Provincial_data;
 
 ![](Results/Rnts%20yearwise.png)
 
+
 - Among the Provinces British Columbia has seen the highest rents for all the years followed by Ontario.
 - In Ontario Toronto Centre tops the rents for all the years
 ![](Results/Average%20rents%20based%20on%20province%20and%20centre.png)
 
+
 - In B. C Vancouver is the least affordabale place rentwise.
+
 
 - In Albeta, Calgary has seen the highest rents 
 
