@@ -87,4 +87,12 @@ SELECT * FROM Provincial_data;
 
 ![](Results//Top%203%20centres%20based%20on%20the%20Year%20and%20Centre.png)
 
+## Recommendations 
+- Building more homes by speeding up project approvals
+- Stabilize immigration to balance supply and demand
+- Adopt innovative building techniques and technologies
+- Ensure that rent control policies strike a balance between affordability for tenants and maintaining incentives for landlords to maintain properties
+- Allocate funds to provincial legal aid organizations to assist tenants facing eviction or “renovictions.”
+- Change federal rules to include timely rental payments in credit scores
+
 
